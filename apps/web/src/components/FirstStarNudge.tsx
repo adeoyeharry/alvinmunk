@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import { getMyVouches } from '@/lib/myvouches';
 import { useTranslations } from '@/lib/i18n';
 import { getItem, setItem } from '@/lib/storage';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 /**
  * First-run "vouch-first" nudge (roundtable / Kaan): at 0 users the activation moment is
@@ -31,9 +34,12 @@ export function FirstStarNudge() {
       <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground text-balance">
         {t('firstStarNudge.body')}
       </p>
-      <div className="mt-3 flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-secondary">
-        <ArrowDown className="size-3.5 motion-safe:animate-bounce" />
-        {t('firstStarNudge.action')}
+      <div className="mt-3 flex items-center justify-center gap-2 eyebrow-mono text-secondary">
+        {/* The vouch form lives on /app/vouch, not below this card (#475). */}
+        <Link href="/app/vouch" className={cn(buttonVariants({ variant: 'flow', size: 'sm' }), 'font-mono')}>
+          {t('firstStarNudge.action')}
+          <ArrowRight aria-hidden />
+        </Link>
         <button
           onClick={() => {
             setItem(DISMISS_KEY, '1');
